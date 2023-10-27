@@ -24,6 +24,8 @@ input_columns3 = ['X1 transaction date', 'X2 house age', 'X3 distance to the nea
 output_column3 = 'Y house price of unit area'
 
 # Impute NaN values with the mean for each dataset
+# Got a runtime warning for missing values in Datasets. So I used Impute NaN Values to continue with min max scaling.: To handle NaN values in the datasets and impute them with the mean, you can use the fillna method.
+
 for column in input_columns1:
     dataset1[column] = dataset1[column].fillna(dataset1[column].mean())
 
