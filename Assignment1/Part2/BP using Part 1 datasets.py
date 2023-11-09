@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 class MyNeuralNetwork:
     def __init__(self, num_layers, num_units, num_epochs, learning_rate, momentum, activation_function, validation_percentage):
@@ -136,34 +137,65 @@ class MyNeuralNetwork:
     def loss_epochs(self):
         return np.column_stack((self.training_error, self.validation_error))
 
-# Example usage
-if __name__ == "__main__":
-    num_layers = 4
-    num_units = [3, 9, 5, 1]
-    num_epochs = 1000
-    learning_rate = 0.1
-    momentum = 0.0
-    activation_function = "sigmoid"
-    validation_percentage = 0.2
+# Function to train a neural network on a given dataset
+def train_neural_network(dataset, input_columns, output_column, num_layers, num_units, num_epochs, learning_rate, momentum, activation_function, validation_percentage):
+    X = dataset[input_columns].values
+    y = dataset[output_column].values.reshape(-1, 1)
 
     nn = MyNeuralNetwork(num_layers, num_units, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
-
-    # Generate random training data
-    X_train = np.random.rand(100, 3)
-    y_train = np.random.rand(100, 1)
-
-    # Training
-    nn.fit(X_train, y_train)
-
-    # Make predictions
-    X_test = np.random.rand(10, 3)
+    
+    nn.fit(X, y)
+    
+    X_test = X  # You can use a different test dataset if needed
     predictions = nn.predict(X_test)
 
-    # Get loss per epoch
-    loss_data = nn.loss_epochs()
+    return nn, predictions
 
-    # Save predictions to a file
-    np.savetxt("predictions.csv", predictions, delimiter=",")
+# Load the three datasets
+dataset1 = pd.read_csv('A1-turbine.csv')
+#dataset2 = pd.read_csv('A1-synthetic.csv')
+#dataset3 = pd.read_csv('A1-real_estate.csv')
 
-    # Save loss data to a file
-    np.savetxt("loss_data.csv", loss_data, delimiter=",")
+# Define input and output columns for each dataset
+input_columns1 = ['height_over_sea_level', 'fall', 'net', 'fall_1', 'flow']
+output_column1 = 'power_of_hydroelectrical_turbine'
+
+#input_columns2 = ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']
+#output_column2 = 'z'
+
+#input_columns3 = ['X1 transaction date', 'X2 house age', 'X3 distance to the nearest MRT station', 'X4 number of convenience stores', 'X5 latitude', 'X6 longitude']
+#output_column3 = 'Y house price of unit area'
+
+# Define neural network configurations for each dataset
+num_layers = 4
+num_units1 = [len(input_columns1)] + [10, 5, 1]  # Adjust the architecture as needed
+#num_units2 = [len(input_columns2)] + [10, 5, 1]
+#num_units3 = [len(input_columns3)] + [10, 5, 1]
+
+num_epochs = 1000
+learning_rate = 0.1
+momentum = 0.0
+activation_function = "sigmoid"
+validation_percentage = 0.2
+
+# Train the neural network for each dataset
+nn1, predictions1 = train_neural_network(dataset1, input_columns1, output_column1, num_layers, num_units1, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
+
+#nn2, predictions2 = train_neural_network(dataset2, input_columns2, output_column2, num_layers, num_units2, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
+
+#nn3, predictions3 = train_neural_network(dataset3, input_columns3, output_column3, num_layers, num_units3, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
+
+# Save predictions to files
+np.savetxt("predictions_dataset1.csv", predictions1, delimiter=",")
+#np.savetxt("predictions_dataset2.csv", predictions2, delimiter=",")
+#np.savetxt("predictions_dataset3.csv", predictions3, delimiter=",")
+
+# Save loss data to files (if needed)
+loss_data1 = nn1.loss_epochs()
+np.savetxt("loss_data_dataset1.csv", loss_data1, delimiter=",")
+
+#loss_data2 = nn2.loss_epochs()
+#np.savetxt("loss_data_dataset2.csv", loss_data2, delimiter=",")
+
+#loss_data3 = nn3.loss_epochs()
+#np.savetxt("loss_data_dataset3.csv", loss_data3, delimiter=",")
