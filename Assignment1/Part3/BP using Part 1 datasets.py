@@ -178,6 +178,8 @@ momentum = 0.0
 activation_function = "sigmoid"
 validation_percentage = 0.2
 
+columnNames = "First loss,Second loss"
+
 # Train the neural network for each dataset
 #nn1, predictions1 = train_neural_network(dataset1, input_columns1, output_column1, num_layers, num_units1, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
 
@@ -195,7 +197,7 @@ np.savetxt("predictions_dataset2.csv", predictions2, delimiter=",")
 #np.savetxt("loss_data_dataset1.csv", loss_data1, delimiter=",")
 
 loss_data2 = nn2.loss_epochs()
-np.savetxt("loss_data_dataset2.csv", loss_data2, delimiter=",")
+np.savetxt("loss_data_dataset2.csv", loss_data2, delimiter=",", header=columnNames)
 
 #loss_data3 = nn3.loss_epochs()
 #np.savetxt("loss_data_dataset3.csv", loss_data3, delimiter=",")
