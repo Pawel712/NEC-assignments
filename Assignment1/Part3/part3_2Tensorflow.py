@@ -226,7 +226,7 @@ def train_neural_network_tensorflow(dataset, input_columns, output_column, num_l
 # Load the dataset
 #dataset2 = pd.read_csv('A1-synthetic.csv')
 #dataset2 = pd.read_csv('A1-real_estate.csv')
-dataset2 = pd.read_csv('A1-turbine.csv')
+dataset2 = pd.read_csv('modified_A1-turbine.csv')
 
 # Define input and output columns for dataset 2
 #input_columns2 = ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']
@@ -273,10 +273,10 @@ plt.figure(figsize=(8, 6))
 plt.scatter(real_values, tf_nn_predictions, alpha=0.5)
 plt.xlabel('Real Values')
 plt.ylabel('Predicted Values')
-plt.title('Correlation between Real and Predicted Values (Dataset 3 RealEstate, tensorflow)')
+plt.title('Correlation between Real and Predicted Values (Dataset 3 Turbine, tensorflow)')
 plt.grid(True)
 plt.plot([real_values.min(), real_values.max()], [real_values.min(), real_values.max()], 'k--', lw=2) # diagonal line
-plt.savefig('correlation_plot_RealEstate_tensorflow.png')
+plt.savefig('correlation_plot_Turbine_tensorflow.png')
 plt.show()
 
 # Save predictions to a file
@@ -288,7 +288,7 @@ plt.show()
 #np.savetxt("loss_data_dataset2.csv", loss_data2, delimiter=",")
 
 #Tensorflow output:
-np.savetxt("RealEstatepredictionTensorflow.csv", tf_nn_predictions, delimiter=",")
-np.savetxt("RealEstatelossDataset2Tensorflow.csv", tf_nn_history.history['loss'], delimiter=",")
+np.savetxt("TurbinepredictionTensorflow.csv", tf_nn_predictions, delimiter=",")
+np.savetxt("TurbinelossDataset2Tensorflow.csv", tf_nn_history.history['loss'], delimiter=",")
 
 
