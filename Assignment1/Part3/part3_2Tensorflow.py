@@ -224,11 +224,19 @@ def train_neural_network_tensorflow(dataset, input_columns, output_column, num_l
 
 
 # Load the dataset
-dataset2 = pd.read_csv('A1-synthetic.csv')
+#dataset2 = pd.read_csv('A1-synthetic.csv')
+#dataset2 = pd.read_csv('A1-real_estate.csv')
+dataset2 = pd.read_csv('A1-turbine.csv')
 
 # Define input and output columns for dataset 2
-input_columns2 = ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']
-output_column2 = 'z'
+#input_columns2 = ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']
+#output_column2 = 'z'
+
+#input_columns2 = ['X1 transaction date', 'X2 house age', 'X3 distance to the nearest MRT station', 'X4 number of convenience stores', 'X5 latitude', 'X6 longitude']
+#output_column2 = 'Y house price of unit area'
+
+input_columns2 = ['height_over_sea_level', 'fall', 'net', 'fall_1', 'flow']
+output_column2 = 'power_of_hydroelectrical_turbine'
 
 # Neural network configurations
 num_layers = 4
@@ -257,26 +265,30 @@ tf_nn_model, tf_nn_predictions, tf_nn_history = train_neural_network_tensorflow(
 real_values = dataset2[output_column2].values.reshape(-1, 1)
 
 # Calculate MAPE for dataset 2
-#mape2 = calculate_mape(real_values, predictions2)
-#print(f"MAPE for Dataset 2: {mape2:.2f}%")
+mape2 = calculate_mape(real_values, tf_nn_predictions)
+print(f"MAPE for Dataset 2: {mape2:.2f}%")
 
 # Visualize the scatter plot for dataset 2
-#plt.figure(figsize=(8, 6))
-#plt.scatter(real_values, predictions2, alpha=0.5)
-#plt.xlabel('Real Values')
-#plt.ylabel('Predicted Values')
-#plt.title('Correlation between Real and Predicted Values (Dataset 2)')
-#plt.grid(True)
-#plt.plot([real_values.min(), real_values.max()], [real_values.min(), real_values.max()], 'k--', lw=2) # diagonal line
-#plt.savefig('correlation_plot_dataset2.png')
-#plt.show()
+plt.figure(figsize=(8, 6))
+plt.scatter(real_values, tf_nn_predictions, alpha=0.5)
+plt.xlabel('Real Values')
+plt.ylabel('Predicted Values')
+plt.title('Correlation between Real and Predicted Values (Dataset 3 RealEstate, tensorflow)')
+plt.grid(True)
+plt.plot([real_values.min(), real_values.max()], [real_values.min(), real_values.max()], 'k--', lw=2) # diagonal line
+plt.savefig('correlation_plot_RealEstate_tensorflow.png')
+plt.show()
 
 # Save predictions to a file
 #np.savetxt("predictions_dataset2.csv", predictions2, delimiter=",")
 
-np.savetxt("predictionDataset2Tensorflow.csv", tf_nn_predictions, delimiter=",")
 
 # Save loss data to a file
 #loss_data2 = nn2.loss_epochs()
 #np.savetxt("loss_data_dataset2.csv", loss_data2, delimiter=",")
-np.savetxt("lossDataset2Tensorflow.csv", tf_nn_history.history['loss'], delimiter=",")
+
+#Tensorflow output:
+np.savetxt("RealEstatepredictionTensorflow.csv", tf_nn_predictions, delimiter=",")
+np.savetxt("RealEstatelossDataset2Tensorflow.csv", tf_nn_history.history['loss'], delimiter=",")
+
+
