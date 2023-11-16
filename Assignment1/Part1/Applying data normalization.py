@@ -3,9 +3,12 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
 # Load the datasets
-dataset1 = pd.read_csv('A1-turbine.csv')
+dataset1 = pd.read_csv('modified_A1-turbine.csv')
 dataset2 = pd.read_csv('A1-synthetic.csv')
 dataset3 = pd.read_csv('A1-real_estate.csv')
+
+print("Columns of Dataset 1:")
+print(dataset1.columns)
 
 # Create a Min-Max scaler for input and output variables
 scaler = MinMaxScaler()
@@ -73,6 +76,6 @@ print("First 5 rows of Dataset 3:")
 print(dataset3.head())
 
 # Save the normalized datasets to separate CSV files
-dataset1.to_csv('normalized_dataset1.csv', index=False)
-dataset2.to_csv('normalized_dataset2.csv', index=False)
-dataset3.to_csv('normalized_dataset3.csv', index=False)
+dataset1.to_csv('TurbineNormalized.csv', index=False)
+dataset2.to_csv('SyntheticNormalized.csv', index=False)
+dataset3.to_csv('RealEstateNormalizeds.csv', index=False)
