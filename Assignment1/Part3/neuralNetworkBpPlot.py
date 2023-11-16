@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 class MyNeuralNetwork:
     def __init__(self, num_layers, num_units, num_epochs, learning_rate, momentum, activation_function, validation_percentage):
@@ -160,26 +161,27 @@ def train_neural_network(dataset, input_columns, output_column, num_layers, num_
     return nn, predictions
 
 # Load the three datasets
-#dataset1 = pd.read_csv('A1-turbine.csv')
-dataset2 = pd.read_csv('A1-synthetic.csv')
-#dataset3 = pd.read_csv('A1-real_estate.csv')
+#dataset1 = pd.read_csv('modified_A1-turbine.csv')
+#dataset2 = pd.read_csv('A1-synthetic.csv')
+dataset3 = pd.read_csv('A1-real_estate.csv')
 
 # Define input and output columns for each dataset
 #input_columns1 = ['height_over_sea_level', 'fall', 'net', 'fall_1', 'flow']
 #output_column1 = 'power_of_hydroelectrical_turbine'
 
-input_columns2 = ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']
-output_column2 = 'z'
+#input_columns2 = ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']
+#output_column2 = 'z'
 
-#input_columns3 = ['X1 transaction date', 'X2 house age', 'X3 distance to the nearest MRT station', 'X4 number of convenience stores', 'X5 latitude', 'X6 longitude']
-#output_column3 = 'Y house price of unit area'
+input_columns3 = ['X1 transaction date', 'X2 house age', 'X3 distance to the nearest MRT station', 'X4 number of convenience stores', 'X5 latitude', 'X6 longitude']
+output_column3 = 'Y house price of unit area'
 
 # Define neural network configurations for each dataset
-num_layers = 4
-#num_units1 = [len(input_columns1)] + [10, 5, 1]  # Adjust the architecture as needed
-num_units2 = [len(input_columns2)] + [10, 5, 1]
-#num_units3 = [len(input_columns3)] + [10, 5, 1]
 
+#num_units1 = [len(input_columns1)] + [10, 5, 1]  # Adjust the architecture as needed
+#num_units2 = [len(input_columns2)] + [10, 5, 1]
+num_units3 = [len(input_columns3)] + [10, 5, 1]
+
+num_layers = 4
 num_epochs = 1000
 learning_rate = 0.1
 momentum = 0.0
@@ -189,62 +191,64 @@ validation_percentage = 0.2
 # Train the neural network for each dataset
 #nn1, predictions1 = train_neural_network(dataset1, input_columns1, output_column1, num_layers, num_units1, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
 
-nn2, predictions2 = train_neural_network(dataset2, input_columns2, output_column2, num_layers, num_units2, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
+#nn2, predictions2 = train_neural_network(dataset2, input_columns2, output_column2, num_layers, num_units2, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
 
-#nn3, predictions3 = train_neural_network(dataset3, input_columns3, output_column3, num_layers, num_units3, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
+nn3, predictions3 = train_neural_network(dataset3, input_columns3, output_column3, num_layers, num_units3, num_epochs, learning_rate, momentum, activation_function, validation_percentage)
 
+# For dataset 1
+#loss_data1 = nn1.loss_epochs()
 
 # For dataset 2 
-loss_data2 = nn2.loss_epochs()
+#ta2 = nn2.loss_epochs()
+
+# For dataset 3
+loss_data3 = nn3.loss_epochs()
 
 # Define headers for the loss data CSV file
 loss_headers = ['Epochs', 'Training Loss', 'Validation Loss']
 
-# Combine headers with the loss data
-loss_data_with_headers = np.vstack([loss_headers, loss_data2])
+# Combine headers with the loss dataset 1
+#loss_data_with_headers = np.vstack([loss_headers, loss_data1])
+
+# Combine headers with the loss dataset 2
+#loss_data_with_headers = np.vstack([loss_headers, loss_data2])
+
+# Combine headers with the loss dataset 3
+loss_data_with_headers = np.vstack([loss_headers, loss_data3])
 
 # Save the loss data along with headers to a CSV file
-np.savetxt("loss_data_dataset2.csv", loss_data_with_headers, delimiter=",", fmt='%s')
-
-# Save the predictions without headers to a CSV file
-np.savetxt("predictions_dataset2.csv", predictions2, delimiter=",")
-
-# Generate line plots for training and validation losses vs. epochs
-plt.figure(figsize=(8, 6))
-plt.plot(loss_data2[:, 0], loss_data2[:, 1], label='Training Loss')
-plt.plot(loss_data2[:, 0], loss_data2[:, 2], label='Validation Loss')
-plt.xlabel('Epochs')
-plt.ylabel('Loss')
-plt.title('Training and Validation Loss Over Epochs (Dataset 2)')
-plt.legend()
-plt.grid(True)
-plt.savefig('loss_plot_dataset2.png')
-plt.show()
-
-# Assuming predictions2 contains predicted values and dataset2 contains the real values
-real_values = dataset2[output_column2].values.reshape(-1, 1)
-
-# Generate scatter plot for real values vs. predicted values
-plt.figure(figsize=(8, 6))
-plt.scatter(real_values, predictions2, alpha=0.5)
-plt.xlabel('Real Values')
-plt.ylabel('Predicted Values')
-plt.title('Correlation between Real and Predicted Values (Dataset 2)')
-plt.grid(True)
-plt.savefig('correlation_plot_dataset2.png')
-plt.show() 
+np.savetxt("loss_data_real_estate.csv", loss_data_with_headers, delimiter=",", fmt='%s')
 
 # Save predictions to files
 #np.savetxt("predictions_dataset1.csv", predictions1, delimiter=",")
-np.savetxt("predictions_dataset2.csv", predictions2, delimiter=",")
-#np.savetxt("predictions_dataset3.csv", predictions3, delimiter=",")
+#np.savetxt("predictions_dataset2.csv", predictions2, delimiter=",")
+np.savetxt("predictions_real_estate.csv", predictions3, delimiter=",")
 
-# Save loss data to files (if needed)
-#loss_data1 = nn1.loss_epochs()
-#np.savetxt("loss_data_dataset1.csv", loss_data1, delimiter=",")
+# Generate line plots for training and validation losses vs. epochs
+plt.figure(figsize=(8, 6))
+plt.plot(loss_data3[:, 0], loss_data3[:, 1], label='Training Loss')
+plt.plot(loss_data3[:, 0], loss_data3[:, 2], label='Validation Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.title('Training and Validation Loss Over Epochs (Real Estate)')
+plt.legend()
+plt.grid(True)
+plt.savefig('loss_plot_real_estate.png')
+plt.show()
 
-loss_data2 = nn2.loss_epochs()
-np.savetxt("loss_data_dataset2.csv", loss_data2, delimiter=",")
+# Assuming predictions2 contains predicted values and dataset2 contains the real values
+real_values = dataset3[output_column3].values.reshape(-1, 1)
 
-#loss_data3 = nn3.loss_epochs()
-#np.savetxt("loss_data_dataset3.csv", loss_data3, delimiter=",")
+# Generate scatter plot for real values vs. predicted values
+plt.figure(figsize=(8, 6))
+plt.scatter(real_values, predictions3, alpha=0.5)
+plt.xlabel('Real Values')
+plt.ylabel('Predicted Values')
+plt.title('Correlation between Real and Predicted Values (Real Estate)')
+plt.grid(True)
+
+plt.savefig('correlation_plot_real_estate.png')
+plt.show() 
+
+
+

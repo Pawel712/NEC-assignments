@@ -1,3 +1,5 @@
+# Script for adding the missing values in A1-turbine.csv for column 'power_of_hydroelectrical_turbine'
+
 import pandas as pd
 
 # Read the dataset into a DataFrame
