@@ -4,7 +4,12 @@ import matplotlib.pyplot as plt
 
 # Function to calculate Mean Absolute Percentage Error (MAPE)
 def calculate_mape(y_true, y_pred):
-    return 100 * np.mean(np.abs((y_true - y_pred) / y_true))
+    epsilon = 1e-10  # A small value to avoid division by zero
+    mask = y_true != 0  # Creating a mask to handle zero values in y_true
+    y_true_masked = y_true[mask]
+    y_pred_masked = y_pred[mask]
+    return 100 * np.mean(np.abs((y_true_masked - y_pred_masked) / (y_true_masked + epsilon)))
+
 
 # Function to train a multilinear regression model on a given dataset
 def train_multilinear_regression(dataset, input_columns, output_column):
@@ -24,9 +29,9 @@ def train_multilinear_regression(dataset, input_columns, output_column):
 
 
 # Load the dataset
-#dataset1 = pd.read_csv('A1-synthetic.csv')
-#dataset2 = pd.read_csv('modified_A1-turbine.csv')
-dataset3 = pd.read_csv('A1-real_estate.csv')
+#dataset1 = pd.read_csv('SyntheticNormalized.csv')
+#dataset2 = pd.read_csv('TurbineNormalized.csv')
+dataset3 = pd.read_csv('RealEstateNormalizeds.csv')
 
 # Define input and output columns for dataset 2
 #input_columns1 = ['v1', 'v2', 'v3', 'v4', 'v5', 'v6', 'v7', 'v8', 'v9']
@@ -39,8 +44,10 @@ input_columns3 = ['X1 transaction date', 'X2 house age', 'X3 distance to the nea
 output_column3 = 'Y house price of unit area'
 
 # Neural network configurations
-num_layers = 4
-num_units2 = [len(input_columns3)] + [10, 5, 1]
+num_layers = 7
+#num_units1 = [len(input_columns1)] + [10, 5, 1]
+#num_units2 = [len(input_columns2)] + [10, 5, 1]
+#num_units3 = [len(input_columns3)] + [8, 4, 1]
 num_epochs = 1000
 learning_rate = 0.1
 momentum = 0.0
@@ -56,11 +63,13 @@ validation_percentage = 0.2
 # Training the multilinear regression model for dataset 3
 multi_reg_model, multi_reg_predictions = train_multilinear_regression(dataset3, input_columns3, output_column3)
 
+
+
 # Assuming predictions2 contains predicted values and dataset1 contains the real values
 #real_values = dataset1[output_column1].values.reshape(-1, 1)
 
 # Assuming predictions2 contains predicted values and dataset1 contains the real values
-#real_values = dataset1[output_column1].values.reshape(-1, 1)
+#real_values = dataset2[output_column2].values.reshape(-1, 1)
 
 # Assuming predictions2 contains predicted values and dataset1 contains the real values
 real_values = dataset3[output_column3].values.reshape(-1, 1)
@@ -74,13 +83,13 @@ plt.figure(figsize=(8, 6))
 plt.scatter(real_values, multi_reg_predictions, alpha=0.5)
 plt.xlabel('Real Values')
 plt.ylabel('Predicted Values')
-plt.title('Correlation between Real and Predicted Values (Dataset realEstate, multi linear regression)')
+plt.title('Correlation between Real and Predicted Values (Dataset RealEstate, multi linear regression)')
 plt.grid(True)
 plt.plot([real_values.min(), real_values.max()], [real_values.min(), real_values.max()], 'k--', lw=2) # diagonal line
-plt.savefig('correlation_plot_realEstate_multi_linear.png')
+plt.savefig('correlation_plot_RealEstate_multi_linear.png')
 plt.show()
 
 #Multilinear regression output:
-np.savetxt("realEstatepredictionMultiLinearRegression.csv", multi_reg_predictions, delimiter=",")
+np.savetxt("RealEstate_predictionMultiLinearRegression.csv", multi_reg_predictions, delimiter=",")
 
 
