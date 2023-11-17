@@ -26,7 +26,7 @@ def train_multilinear_regression(dataset, input_columns, output_column):
     multi_reg_predictions = multi_reg_model.predict(X)
 
     return multi_reg_model, multi_reg_predictions
-
+ 
 
 # Load the dataset
 dataset1 = pd.read_csv('SyntheticNormalized.csv')

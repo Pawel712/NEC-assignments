@@ -118,7 +118,7 @@ plt.scatter(real_values2, tf_nn_predictions2, alpha=0.5)
 plt.xlabel('Real Values')
 plt.ylabel('Predicted Values')
 plt.title('Correlation between Real and Predicted Values (Dataset Turbine, tensorflow)')
-plt.grid(True)
+plt.grid(True) 
 plt.plot([real_values2.min(), real_values2.max()], [real_values2.min(), real_values2.max()], 'k--', lw=2) # diagonal line
 plt.savefig('correlation_plot_Turbine_tensorflow.png')
 plt.show()
